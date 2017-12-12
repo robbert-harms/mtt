@@ -1,5 +1,56 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Use this for a a4 output
+%\documentclass[11pt,a4paper]{mttTemplate}
+
+%% Use these two lines for your booklet
+\documentclass[11pt]{mttTemplate}
+\usepackage[paperwidth=17cm, paperheight=24cm]{geometry}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\input{definitions/configuration}
+\input{definitions/packages}
+\input{definitions/hyphenation}
+
+
+%% Path to the directory containing the graphics and figures
+%% You can add more subpaths by adding ``,{./figures/subdir/}`` within the first set of brackets.
+\graphicspath{{./figures/}}
+
+%% To compile only one or some chapters, use the following command.
+%% This can be helpful in quickly debugging your work
+%\includeonly{chapters/chapter1}
+
+
 \begin{document}
-Test.
+	
+\headerpage
+\thesistitlepage
+\infopage
+
+\begin{dedication}
+	For my parents
+\end{dedication}
+
+\cleardoublepage
+\pagenumbering{gobble}
+\tableofcontents
+\pagenumbering{arabic}
+
+\include{chapters/introduction}
+
+%% This is the place where you insert your own chapters.
+%\include{chapters/chapter1}
+%\include{chapters/chapter2}
+
+\include{chapters/general_discussion}
+\include{chapters/summary}
+\include{chapters/summary_dutch}
+\include{chapters/valorisation}
+\include{chapters/acknowledgements}
+\include{chapters/curriculum_vitae}
+
+\bibliographystyle{acm}
+\bibliography{bibliography}
+
 \end{document}
