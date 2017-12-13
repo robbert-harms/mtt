@@ -162,9 +162,28 @@
 %% For adding margins using the addmargin command
 \usepackage{scrextend}
 
+%% For the chapter title markup
+\usepackage{titlesec}
+
+%% For the header and footer markup
+\usepackage{fancyhdr}
+
+%% Set the header footer style
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LO]{\itshape\nouppercase{\rightmark}}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+
+
 %% Environment for pushing a paragraph to the bottom of the page
 \newenvironment{bottomparagraph}{\par\vspace*{\fill}}{\clearpage}
 
+%% The header page with the title and author
 \newcommand{\headerpage}{
 	\pagenumbering{gobble}
 	\begin{titlepage}
@@ -181,6 +200,8 @@
 		\end{center}
 	\end{titlepage}
 }
+
+%% The real thesis title page with the necessary text
 \newcommand{\thesistitlepage}{
 	\begin{titlepage}
 		\begin{center}
@@ -202,6 +223,8 @@
 		\end{center}
 	\end{titlepage}
 }
+
+%% The info page with the promotor information and the legal stuff
 \newcommand{\infopage}{
 	\thispagestyle{empty}
 	
@@ -241,6 +264,7 @@
 	\end{bottomparagraph}
 }
 
+%% The environment the dedication markup.
 \newenvironment{dedication}
 {
 	\clearpage           % we want a new page
@@ -252,4 +276,40 @@
 {\par % end the paragraph
 	\vspace{\stretch{4}} % space at bottom is three times that at the top
 	\clearpage           % finish off the page
+}
+
+%% The fancy chapter style
+\newcommand{\enablemainchapterstyle}{
+	\titleformat{\chapter}[display]
+	{\normalfont\Large\filcenter\sffamily}
+	{\titlerule[1pt]%
+		\vspace{1pt}%
+		\titlerule
+		\vspace{1pc}%
+		\LARGE\MakeUppercase{\chaptertitlename} \thechapter}
+	{1pc}
+	{\titlerule
+		\vspace{1pc}%
+		\Huge}
+	[\newpage] % creates the new page
+}
+
+%% The old chapter style, used in the table of contents
+\newcommand{\oldchap}{%
+	\titleformat{\chapter}[display]
+	{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+	\titlespacing*{\chapter} {0pt}{50pt}{40pt}}
+
+%% Enable by default the new chapter style
+\enablemainchapterstyle
+
+\let\oldtableofcontents\tableofcontents
+\renewcommand\tableofcontents{
+	\oldchap
+	\cleardoublepage
+	\pagenumbering{gobble}
+	\setcounter{tocdepth}{0}
+	\oldtableofcontents
+	\pagenumbering{arabic}
+	\enablemainchapterstyle
 }
