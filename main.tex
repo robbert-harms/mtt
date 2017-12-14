@@ -19,34 +19,27 @@
 %% To compile only one or some chapters, use the following command.
 %% This can be helpful in quickly debugging your work
 %\includeonly{chapters/chapter1}
-
+\usepackage{blindtext}
 
 \begin{document}
-	
+%% Flip the binding margins to the correct order
+
 %% The front matter
 \frontmatter
 	\headerpage
 	\thesistitlepage
 	\infopage[true]  % set to false to disable the copyright text
 	\dedication{To my parents}
-
-	%% Initialize the use of minitocs
-	\dominitoc
-	
-	%% Display the chapters TOC
 	\tableofcontents
+
 
 %% Start the main content
 \mainmatter
-
-	%% Correct the right left printer margins
-	\flipmargins
-		
-	%% The main content
 	\include{chapters/introduction}
 	%\include{chapters/chapter1}
+	
 	%\include{chapters/chapter2}
-	\include{chapters/general_discussion}
+	\include{chapters/general_discussion}	
 	\include{chapters/summary}
 	\include{chapters/summary_dutch}
 	\include{chapters/valorisation}
@@ -55,8 +48,9 @@
 
 %% Start the appendix part for adding appendices.
 \appendix
-	
-%% The final part of the book, the backmatter for the bibliography and perhaps the index
+%	\include{chapters/appendix1}
+
+%% The final part of the book, the backmatter for the bibliography and perhaps an index
 \backmatter
 	\bibliographystyle{acm}
 	\bibliography{bibliography}

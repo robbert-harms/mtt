@@ -15,6 +15,9 @@
 %% For comparing strings for boolean comparisons
 \usepackage{xstring}
 
+%% Fancy headers and footers
+\usepackage[automark,headsepline]{scrlayer-scrpage}
+
 
 %% The header page with the title and author
 \newcommand{\headerpage}{
@@ -22,13 +25,16 @@
 		\thispagestyle{empty}
 		\begin{center}
 			\vspace*{\stretch{1}}
-
+			
 			{\large\bfseries {Doctoral thesis}}
 			\\~\\
-			{\LARGE\bfseries\MakeUppercase {\thesistitle}}\par
+			\begin{spacing}{1.5}
+			{\LARGE\bfseries\MakeUppercase {\thesistitle}}
+			\end{spacing}
 			
 			\vspace{\stretch{0.5}}
 			
+
 			{\large {\thesisauthor}}
 			\\~\\
 			\thesisyear
@@ -45,7 +51,9 @@
 		\begin{center}
 			\vspace*{\stretch{1.5}}
 			
-			{\LARGE\bfseries\MakeUppercase {\thesistitle}}\par
+			\begin{spacing}{1.5}
+			{\LARGE\bfseries\MakeUppercase {\thesistitle}}
+			\end{spacing}
 			
 			\vspace{\stretch{2}}
 			
@@ -65,7 +73,7 @@
 }
 
 %% Flip the printer margins from left to right
-\newcommand{\flipmargins}{
+\newcommand{\flipbindingmargins}{
 	\let\tmp\oddsidemargin
 	\let\oddsidemargin\evensidemargin
 	\let\evensidemargin\tmp
@@ -77,7 +85,6 @@
 
 %% The info page with the promotor information and the legal stuff
 \newcommand{\infopage}[1][false]{
-	\flipmargins	
 	\thispagestyle{empty}
 	
 	\begin{flushleft}
@@ -119,8 +126,6 @@
 			}
 		}
 	\end{bottomparagraph}
-	
-	\flipmargins	
 }
 
 %% The dedication markup, use as \dedication{My text}
@@ -146,9 +151,47 @@
 
 %% Table of contents with some specific styling
 \let\oldtableofcontents\tableofcontents
-\renewcommand\tableofcontents{
+\renewcommand\tableofcontents{%
 	\cleardoublepage
 	\pagenumbering{gobble}
 	\setcounter{tocdepth}{0}
 	\oldtableofcontents
 }
+
+
+%% Set the title style
+\KOMAoption{chapterprefix}{true}
+\renewcommand{\chaptername}{}
+\renewcommand*{\raggedchapter}{\raggedleft}
+\setkomafont{chapterprefix}{\fontsize{70}{-20} \selectfont}
+\setkomafont{chapter}{\normalfont\huge}
+\renewcommand*{\chapterheadstartvskip}{\vspace*{8\baselineskip}}
+\renewcommand*{\chapterheadendvskip}{\vspace*{2\baselineskip}}
+
+%\newcommand\startfancychapters{}
+\makeatletter
+\newcommand\startfancychapters{
+	\let\stdchapter\chapter
+	\renewcommand*\chapter{%
+		\@ifstar{\starchapter}{\@dblarg\nostarchapter}
+	}
+	\newcommand*\starchapter[1]{%
+		\stdchapter*{##1}
+		\minitoc
+		\clearpage
+	}
+	\def\nostarchapter[##1]##2{%
+		\stdchapter[{##1}]{##2}
+		\minitoc
+		\clearpage
+	}
+}
+\makeatother
+
+%% Automatically start the fancy chapter style in the main matter
+\let\oldmainmatter\mainmatter
+\renewcommand\mainmatter{\oldmainmatter \startfancychapters}
+
+%% Start the minitoc in the frontmatter
+\let\oldfrontmatter\frontmatter
+\renewcommand\frontmatter{\oldfrontmatter \dominitoc \flipbindingmargins}
