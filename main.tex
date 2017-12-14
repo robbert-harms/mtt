@@ -1,10 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Use this for a a4 output
-%\documentclass[11pt,a4paper]{mttTemplate}
+%\input{definitions/a4style}
 
-%% Use these two lines for your booklet
-\documentclass[11pt,b5paper]{mttTemplate}
-\usepackage[paperwidth=17cm, paperheight=24cm]{geometry}
+%% Use this for your booklet
+\input{definitions/b5style}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -24,31 +23,42 @@
 
 \begin{document}
 	
-\headerpage
-\thesistitlepage
-\infopage
+%% The front matter
+\frontmatter
+	\headerpage
+	\thesistitlepage
+	\infopage[true]  % set to false to disable the copyright text
+	\dedication{To my parents}
 
-\begin{dedication}
-	To my parents
-\end{dedication}
+	%% Initialize the use of minitocs
+	\dominitoc
+	
+	%% Display the chapters TOC
+	\tableofcontents
 
-\tableofcontents
+%% Start the main content
+\mainmatter
 
+	%% Correct the right left printer margins
+	\flipmargins
+		
+	%% The main content
+	\include{chapters/introduction}
+	%\include{chapters/chapter1}
+	%\include{chapters/chapter2}
+	\include{chapters/general_discussion}
+	\include{chapters/summary}
+	\include{chapters/summary_dutch}
+	\include{chapters/valorisation}
+	\include{chapters/acknowledgements}
+	\include{chapters/curriculum_vitae}
 
-\include{chapters/introduction}
-
-%% This is the place where you insert your own chapters.
-%\include{chapters/chapter1}
-%\include{chapters/chapter2}
-
-\include{chapters/general_discussion}
-\include{chapters/summary}
-\include{chapters/summary_dutch}
-\include{chapters/valorisation}
-\include{chapters/acknowledgements}
-\include{chapters/curriculum_vitae}
-
-\bibliographystyle{acm}
-\bibliography{bibliography}
+%% Start the appendix part for adding appendices.
+\appendix
+	
+%% The final part of the book, the backmatter for the bibliography and perhaps the index
+\backmatter
+	\bibliographystyle{acm}
+	\bibliography{bibliography}
 
 \end{document}
