@@ -9,14 +9,23 @@
 %% For adding copyrights
 \usepackage{textcomp}
 
-%% For adding margins using the addmargin command
-\usepackage{scrextend}
-
 %% For comparing strings for boolean comparisons
 \usepackage{xstring}
 
+%% For your own citations
+\usepackage{bibentry}
+\nobibliography*
+
 %% Fancy headers and footers
 \usepackage[automark,headsepline]{scrlayer-scrpage}
+
+%% set the header style, chapter header verso, nothing recto
+\renewcommand*{\chaptermarkformat}{Chapter~\thechapter. \enskip}
+\rohead{}
+
+
+%% The addmargin environment without the big vertical skip
+\newenvironment{addmarginnobigskip}{\setlength{\parskip}{0pt plus 1pt}\addmargin}{\endaddmargin}
 
 
 %% The header page with the title and author
@@ -89,23 +98,23 @@
 	
 	\begin{flushleft}
 		\textbf{Promotor}
-		\begin{addmargin}[1em]{2em}
+		\begin{addmarginnobigskip}[1em]{1em}
 			\thesispromotors
-		\end{addmargin}
+		\end{addmarginnobigskip}
 		
-		\vspace{1.4em}
+		\vspace{1em}
 		
 		\textbf{Copromotor}
-		\begin{addmargin}[1em]{2em}
+		\begin{addmarginnobigskip}[1em]{2em}
 			\thesiscopromotors
-		\end{addmargin}
+		\end{addmarginnobigskip}
 		
-		\vspace{2.4em}
+		\vspace{2em}
 		
 		\textbf{Assessment Committee} \\
-		\begin{addmargin}[1em]{2em}
+		\begin{addmarginnobigskip}[1em]{2em}
 			\assessmentcommittee
-		\end{addmargin}	
+		\end{addmarginnobigskip}	
 		
 	\end{flushleft}
 
@@ -113,9 +122,7 @@
 		\IfEqCase{#1}{
 			{false}{}
 			{true}{
-				\begin{flushleft}
-					\textcopyright \space \thesisauthor, Maastricht \thesisyear.\\
-				\end{flushleft}
+				\textcopyright \space \thesisauthor, Maastricht \thesisyear. \\
 				All rights reserved. No part of this publication may be reproduced, stored in a retrieval system or transmitted in any form or by any means, electronic, mechanical, photocopying, recording or otherwise, without prior written permission of the author.
 				\\~\\
 				\begin{tabular}{@{}ll@{}}
@@ -155,6 +162,7 @@
 	\cleardoublepage
 	\pagenumbering{gobble}
 	\setcounter{tocdepth}{0}
+	\setcounter{minitocdepth}{1}
 	\oldtableofcontents
 }
 
@@ -168,10 +176,12 @@
 \renewcommand*{\chapterheadstartvskip}{\vspace*{8\baselineskip}}
 \renewcommand*{\chapterheadendvskip}{\vspace*{2\baselineskip}}
 
-%\newcommand\startfancychapters{}
+
+%% The chapter title style
+\let\stdchapter\chapter
+
 \makeatletter
 \newcommand\startfancychapters{
-	\let\stdchapter\chapter
 	\renewcommand*\chapter{%
 		\@ifstar{\starchapter}{\@dblarg\nostarchapter}
 	}
@@ -188,10 +198,41 @@
 }
 \makeatother
 
+%% Disables the fancy chapter style
+\makeatletter
+\newcommand\stopfancychapters{
+	\renewcommand*\starchapter[1]{%
+		\stdchapter*{##1}
+	}
+	\def\nostarchapter[##1]##2{%
+		\stdchapter[{##1}]{##2}
+	}
+}
+\makeatother
+
+
 %% Automatically start the fancy chapter style in the main matter
 \let\oldmainmatter\mainmatter
 \renewcommand\mainmatter{\oldmainmatter \startfancychapters}
 
-%% Start the minitoc in the frontmatter
+%% Automatically start the minitoc in the frontmatter
 \let\oldfrontmatter\frontmatter
 \renewcommand\frontmatter{\oldfrontmatter \dominitoc \flipbindingmargins}
+
+%% Revert back to old chapter styles in the backmatter
+\let\oldbackmatter\backmatter
+\renewcommand\backmatter{\oldbackmatter \stopfancychapters}
+
+%% For citing the work a chapter came from
+\newcommand{\papercitation}[2]{
+	\begin{bottomparagraph}
+		\rule{0.5\textwidth}{0.1pt}\\
+		 \hspace*{1em} Adapted from: \bibentry{#1}. #2.
+	\end{bottomparagraph}
+}
+
+%% Sets the fonts for the chapter headers
+\setkomafont{disposition}{\mdseries}
+
+%% The spacing between the start of the section and the section title
+\RedeclareSectionCommand[afterskip=0.05em]{section}
