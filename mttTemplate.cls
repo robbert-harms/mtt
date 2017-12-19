@@ -2,6 +2,16 @@
 \ProvidesClass{mttTemplate}[2017/12/12 PhD Dissertation Style]
 \LoadClassWithOptions{scrbook}
 
+%% The bibliography used some of the old commands, so we add them manually.
+\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+\DeclareRobustCommand*\cal{\@fontswitch\relax\mathcal}
+\DeclareRobustCommand*\mit{\@fontswitch\relax\mathnormal}
 
 %% For allowing double spaces 
 \usepackage{setspace}
@@ -22,7 +32,6 @@
 %% set the header style, chapter header verso, nothing recto
 \renewcommand*{\chaptermarkformat}{Chapter~\thechapter. \enskip}
 \rohead{}
-
 
 %% The addmargin environment without the big vertical skip
 \newenvironment{addmarginnobigskip}{\setlength{\parskip}{0pt plus 1pt}\addmargin}{\endaddmargin}
