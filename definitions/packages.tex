@@ -1,4 +1,4 @@
-%%% Defines the packages that the thesis will be using
+%%% Defines the packages for your thesis will be using
 
 %% The font used
 \usepackage{palatino}
@@ -6,32 +6,9 @@
 %% For using utf8 symbols in the text
 \usepackage[utf8]{inputenc}
 
-%\usepackage{makeidx}     % only with Latex2e
-%%\makeindex
-%
-%% Other packages
-%%\usepackage{fancyheadings}
-%\usepackage{fancyhdr}
-%\usepackage{amsmath,dsfont}
-%\usepackage{amssymb,mathabx}
-%\usepackage{epsfig}
-%\usepackage[figbotcap]{subfigure}
-%% \usepackage{subfig}
-%\usepackage{graphics}
-%\usepackage{float}
-%\usepackage{here}
-%\usepackage[abbr]{harvard}
-%\usepackage{rotating}
-%\usepackage{multirow}
-%\usepackage{comment}
-%\usepackage{epigraph}
-%\usepackage{array,multirow,nicefrac}
-%\usepackage{appendix}
-%\usepackage{acronym}
-%\usepackage[chapter]{algorithm}
-%\usepackage{algorithmic}
-%% \usepackage{showframe}
-
+%% For some fake text, can be removed if you have some content 
+\usepackage{blindtext}
+\usepackage{lipsum}  
 
 %% For adding illustrations and graphics
 \usepackage{graphicx}
@@ -42,22 +19,40 @@
 %% For mini TOC in each chapter
 \usepackage{minitoc}
 
-%\usepackage{lscape}
-%\usepackage[table]{xcolor}
-%\usepackage{tabularx,booktabs}
-%\usepackage{wrapfig}
-%
-%\usepackage{pstricks,pst-node}
-%% \usepackage{pstricks-add}%pst-char,,pst-text,ae,pst-grad,pst-slpe
-%\usepackage{fancybox}
-%% \usepackage[dvips,margin=1cm]{geometry}
-%% \usepackage{lmodern,pst-node}
-%\usepackage{psfrag}
-%\usepackage{hyperref}
-%\usepackage[resetlabels]{multibib}%[resetlabels]
-%
-%\usepackage{hyphenat}
-%\usepackage{datetime2}
+%% For more advanced citations
+\usepackage[numbers]{natbib}
 
-%% For removing headers and footers from empty pages
-%\usepackage{emptypage}
+%% better urls in bibliography
+\usepackage[hidelinks]{hyperref}
+
+%% better looking tables by default
+\usepackage{booktabs}
+
+%% a different table class
+\usepackage{tabularx,ragged2e}
+\newcolumntype{C}{>{\Centering\arraybackslash}X} % centered "X" column
+\newcolumntype{L}{>{\arraybackslash}X} % left aligned "X" column
+
+%% allows you to rotate figures and tables
+\usepackage[figuresright]{rotating}
+
+%% for using things like \mathbb
+\usepackage{amssymb}
+
+%% for other math environments
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator{\arctantwo}{arctan2}
+
+%% for automatically breaking equations over lines
+\usepackage{breqn}
+
+%% for hyphenation of works already containing an hyphen
+%% use \hyp{} in those words, e.g. Levenberg\hyph{}Marquardt
+\usepackage{hyphenat}
+
+%% for more advanced appendices
+\usepackage{appendix}
+
+%% for referencing things by name
+\usepackage{nameref}

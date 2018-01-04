@@ -2,6 +2,16 @@
 \ProvidesClass{mttTemplate}[2017/12/12 PhD Dissertation Style]
 \LoadClassWithOptions{scrbook}
 
+%% The bibliography used some of the old commands, so we add them manually.
+\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+\DeclareRobustCommand*\cal{\@fontswitch\relax\mathcal}
+\DeclareRobustCommand*\mit{\@fontswitch\relax\mathnormal}
 
 %% For allowing double spaces 
 \usepackage{setspace}
@@ -9,14 +19,25 @@
 %% For adding copyrights
 \usepackage{textcomp}
 
-%% For adding margins using the addmargin command
-\usepackage{scrextend}
-
 %% For comparing strings for boolean comparisons
 \usepackage{xstring}
 
+%% For your own citations
+\usepackage{bibentry}
+\nobibliography*
+
 %% Fancy headers and footers
 \usepackage[automark,headsepline]{scrlayer-scrpage}
+
+%% provides more advanced conditionals
+\usepackage{etoolbox}
+
+%% set the header style, chapter header verso, nothing recto
+\renewcommand*{\chaptermarkformat}{Chapter~\thechapter. \enskip}
+\rohead{}
+
+%% The addmargin environment without the big vertical skip
+\newenvironment{addmarginnobigskip}{\setlength{\parskip}{0pt plus 1pt}\addmargin}{\endaddmargin}
 
 
 %% The header page with the title and author
@@ -59,7 +80,7 @@
 			
 			Dissertation\\~\\
 			To obtain the degree of Doctor at Maastricht University,\\
-			on the authority of the Rector Magnificus, Prof. Dr. L.L.G. Soete,\\
+			on the authority of the Rector Magnificus, Prof. Dr. R.M. Letschert,\\
 			in accordance with the decision of the Board of Deans,\\
 			to be defended in public \\
 			on \thesisdefendingdate, at \thesisdefendingtime
@@ -81,7 +102,7 @@
 }
 
 %% Environment for pushing a paragraph to the bottom of the page
-\newenvironment{bottomparagraph}{\par\vspace*{\fill}}{\clearpage}
+\newenvironment{bottomparagraph}{\par\vspace*{\fill}}{}
 
 %% The info page with the promotor information and the legal stuff
 \newcommand{\infopage}[1][false]{
@@ -89,23 +110,23 @@
 	
 	\begin{flushleft}
 		\textbf{Promotor}
-		\begin{addmargin}[1em]{2em}
+		\begin{addmarginnobigskip}[1em]{1em}
 			\thesispromotors
-		\end{addmargin}
+		\end{addmarginnobigskip}
 		
-		\vspace{1.4em}
+		\vspace{1em}
 		
 		\textbf{Copromotor}
-		\begin{addmargin}[1em]{2em}
+		\begin{addmarginnobigskip}[1em]{2em}
 			\thesiscopromotors
-		\end{addmargin}
+		\end{addmarginnobigskip}
 		
-		\vspace{2.4em}
+		\vspace{2em}
 		
 		\textbf{Assessment Committee} \\
-		\begin{addmargin}[1em]{2em}
+		\begin{addmarginnobigskip}[1em]{2em}
 			\assessmentcommittee
-		\end{addmargin}	
+		\end{addmarginnobigskip}	
 		
 	\end{flushleft}
 
@@ -113,9 +134,7 @@
 		\IfEqCase{#1}{
 			{false}{}
 			{true}{
-				\begin{flushleft}
-					\textcopyright \space \thesisauthor, Maastricht \thesisyear.\\
-				\end{flushleft}
+				\textcopyright \space \thesisauthor, Maastricht \thesisyear. \\
 				All rights reserved. No part of this publication may be reproduced, stored in a retrieval system or transmitted in any form or by any means, electronic, mechanical, photocopying, recording or otherwise, without prior written permission of the author.
 				\\~\\
 				\begin{tabular}{@{}ll@{}}
@@ -126,6 +145,7 @@
 			}
 		}
 	\end{bottomparagraph}
+	\clearpage
 }
 
 %% The dedication markup, use as \dedication{My text}
@@ -155,6 +175,7 @@
 	\cleardoublepage
 	\pagenumbering{gobble}
 	\setcounter{tocdepth}{0}
+	\setcounter{minitocdepth}{1}
 	\oldtableofcontents
 }
 
@@ -168,10 +189,12 @@
 \renewcommand*{\chapterheadstartvskip}{\vspace*{8\baselineskip}}
 \renewcommand*{\chapterheadendvskip}{\vspace*{2\baselineskip}}
 
-%\newcommand\startfancychapters{}
+
+%% The chapter title style
+\let\stdchapter\chapter
+
 \makeatletter
 \newcommand\startfancychapters{
-	\let\stdchapter\chapter
 	\renewcommand*\chapter{%
 		\@ifstar{\starchapter}{\@dblarg\nostarchapter}
 	}
@@ -188,10 +211,49 @@
 }
 \makeatother
 
+%% Disables the fancy chapter style
+\makeatletter
+\newcommand\stopfancychapters{
+	\renewcommand*\starchapter[1]{%
+		\stdchapter*{##1}
+	}
+	\def\nostarchapter[##1]##2{%
+		\stdchapter[{##1}]{##2}
+	}
+}
+\makeatother
+
+
 %% Automatically start the fancy chapter style in the main matter
 \let\oldmainmatter\mainmatter
 \renewcommand\mainmatter{\oldmainmatter \startfancychapters}
 
-%% Start the minitoc in the frontmatter
+%% Automatically start the minitoc in the frontmatter
 \let\oldfrontmatter\frontmatter
 \renewcommand\frontmatter{\oldfrontmatter \dominitoc \flipbindingmargins}
+
+%% Revert back to old chapter styles in the backmatter
+\let\oldbackmatter\backmatter
+\renewcommand\backmatter{\oldbackmatter \stopfancychapters}
+
+
+%% For citing the work a chapter came from
+\newcommand{\papercitation}[2]{
+	\begin{bottomparagraph}
+		\rule{0.5\textwidth}{0.1pt}\\
+		 \hspace*{1em} Adapted from: \bibentry{#1}. #2.
+	\end{bottomparagraph}
+}
+
+%% Sets the fonts for the section headers
+\setkomafont{disposition}{\mdseries\sffamily} % sets the section headers
+\addtokomafont{chapterentry}{\rmfamily} % but that also sets the TOC entries, so reverting that
+
+%% set the font of the captions
+\setkomafont{caption}{\sffamily\small}
+\setkomafont{captionlabel}{\sffamily\small}
+\setcapindent{0em}
+
+%% The spacing between the start of the section and the section title
+\RedeclareSectionCommand[afterskip=0.05em]{section}
+\RedeclareSectionCommand[afterskip=0.05em]{subsection}

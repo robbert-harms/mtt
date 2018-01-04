@@ -6,24 +6,23 @@
 \input{definitions/b5style}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+%% Add the configuration and packages
 \input{definitions/configuration}
 \input{definitions/packages}
 \input{definitions/hyphenation}
-
 
 %% Path to the directory containing the graphics and figures
 %% You can add more subpaths by adding ``,{./figures/subdir/}`` within the first set of brackets.
 \graphicspath{{./figures/}}
 
-%% To compile only one or some chapters, use the following command.
-%% This can be helpful in quickly debugging your work
-%\includeonly{chapters/chapter1}
-\usepackage{blindtext}
+
+%% handy websites:
+%% https://www.tablesgenerator.com/
+%% https://www.codecogs.com/latex/eqneditor.php
+
 
 \begin{document}
-%% Flip the binding margins to the correct order
-
+	
 %% The front matter
 \frontmatter
 	\headerpage
@@ -35,16 +34,14 @@
 
 %% Start the main content
 \mainmatter
-	\include{chapters/introduction}
-	%\include{chapters/chapter1}
-	
-	%\include{chapters/chapter2}
-	\include{chapters/general_discussion}	
-	\include{chapters/summary}
-	\include{chapters/summary_dutch}
-	\include{chapters/valorisation}
-	\include{chapters/acknowledgements}
-	\include{chapters/curriculum_vitae}
+%	\include{chapters/introduction}
+	\include{chapters/chapter1}
+%	\include{chapters/general_discussion}	
+%	\include{chapters/summary}
+%	\include{chapters/summary_dutch}
+%	\include{chapters/valorisation}
+%	\include{chapters/acknowledgements}
+%	\include{chapters/curriculum_vitae}
 
 %% Start the appendix part for adding appendices.
 \appendix
@@ -52,7 +49,7 @@
 
 %% The final part of the book, the backmatter for the bibliography and perhaps an index
 \backmatter
-	\bibliographystyle{acm}
+	\bibliographystyle{mttplainnat}
 	\bibliography{bibliography}
 
 \end{document}
