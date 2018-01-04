@@ -19,6 +19,9 @@
 %% For adding copyrights
 \usepackage{textcomp}
 
+%% For adding margins using the addmargin command
+\usepackage{scrextend}
+
 %% For comparing strings for boolean comparisons
 \usepackage{xstring}
 
@@ -195,6 +198,7 @@
 
 \makeatletter
 \newcommand\startfancychapters{
+	\let\stdchapter\chapter
 	\renewcommand*\chapter{%
 		\@ifstar{\starchapter}{\@dblarg\nostarchapter}
 	}
