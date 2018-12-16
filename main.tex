@@ -11,10 +11,12 @@
 \input{definitions/packages}
 \input{definitions/hyphenation}
 
-
 %% Path to the directory containing the graphics and figures
 %% You can add more subpaths by adding ``,{./figures/subdir/}`` within the first set of brackets.
 \graphicspath{{./figures/}}
+
+%% Load the default bibliography file
+\addbibresource{bibliography.bib}
 
 
 %% handy websites:
@@ -35,22 +37,22 @@
 
 %% Start the main content
 \mainmatter
-%	\include{chapters/introduction}
+	\include{chapters/introduction}
 	\include{chapters/chapter1}
-%	\include{chapters/general_discussion}	
-%	\include{chapters/summary}
-%	\include{chapters/summary_dutch}
-%	\include{chapters/valorisation}
-%	\include{chapters/acknowledgements}
-%	\include{chapters/curriculum_vitae}
+	\include{chapters/chapter2}
+	%...
+	\include{chapters/discussion}	
 
-%% Start the appendix part for adding appendices.
-\appendix
-%	\include{chapters/appendix1}
 
-%% The final part of the book, the backmatter for the bibliography and perhaps an index
-\backmatter
-	\bibliographystyle{mttplainnat}
-	\bibliography{bibliography}
+%% The final part of the book, the bibliography and final parts
+\backmatter	
+    %% for the "notcategory" see the mttTemplate.cls file
+	\printbibliography[notcategory=ignore]
+	
+	\include{chapters/valorisation}
+	\include{chapters/samenvatting}
+	\include{chapters/acknowledgements}
+	\include{chapters/publications}
+	\include{chapters/about_the_author}
 
 \end{document}

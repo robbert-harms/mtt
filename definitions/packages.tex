@@ -3,9 +3,6 @@
 %% The font used
 \usepackage{palatino}
 
-%% For using utf8 symbols in the text
-\usepackage[utf8]{inputenc}
-
 %% For some fake text, can be removed if you have some content 
 \usepackage{blindtext}
 \usepackage{lipsum}  
@@ -13,17 +10,10 @@
 %% For adding illustrations and graphics
 \usepackage{graphicx}
 
-%% For adding some demonstration text
-\usepackage{lipsum}  
-
-%% For mini TOC in each chapter
-\usepackage{minitoc}
-
-%% For more advanced citations
-\usepackage[numbers]{natbib}
-
 %% better urls in bibliography
 \usepackage[hidelinks]{hyperref}
+%% a workaround for all texttt and urls that cross the borders
+{\setlength\emergencystretch{3cm}
 
 %% better looking tables by default
 \usepackage{booktabs}
@@ -56,3 +46,16 @@
 
 %% for referencing things by name
 \usepackage{nameref}
+
+%% for better units support
+\usepackage{siunitx}
+
+%% For tables using more than one page
+\usepackage{ltablex}
+
+%% Cells spanning multiple rows in the tables
+\usepackage{multirow}
+
+%% Avoid putting floats in the next section
+\usepackage[section]{placeins}
+
