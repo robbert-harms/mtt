@@ -74,7 +74,8 @@
 
 
 %% set the header style, chapter header verso, nothing recto
-\renewcommand*{\chaptermarkformat}{Chapter~\thechapter. \enskip}
+\renewcommand\@chapapp{Chapter}
+\renewcommand*{\chaptermarkformat}{\@chapapp~\thechapter. \enskip}
 \rohead{}
 
 %% The addmargin environment without the big vertical skip
@@ -262,6 +263,7 @@
 %% The spacing between the start of the section and the section title
 \RedeclareSectionCommand[afterskip=0.05em]{section}
 \RedeclareSectionCommand[afterskip=0.05em]{subsection}
+\RedeclareSectionCommand[afterskip=0.05em]{subsubsection}
 
 
 %% Command for adding an appendix section to each chapter
