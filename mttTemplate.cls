@@ -87,12 +87,15 @@
 	\begin{titlepage}
 		\thispagestyle{empty}
 		\begin{center}
-			\vspace*{\stretch{1}}
+			\vspace*{\stretch{0.8}}
 			
-			{\large\bfseries {Doctoral thesis}}
-			\\~\\
+			{\large\bfseries {Dissertation}}
+			\\~\\~\\
 			\begin{spacing}{1.5}
-			{\LARGE\bfseries\MakeUppercase {\thesistitle}}
+			{\LARGE\bfseries {\thesistitle}}
+			\end{spacing}
+			\begin{spacing}{1.2}
+				{\Large\bfseries {\thesissubtitle}}
 			\end{spacing}
 			
 			\vspace{\stretch{0.5}}
@@ -112,17 +115,20 @@
 	\begin{titlepage}
 		\thispagestyle{empty}
 		\begin{center}
-			\vspace*{\stretch{1.5}}
+			\vspace*{\stretch{2.5}}
 			
 			\begin{spacing}{1.5}
-			{\LARGE\bfseries\MakeUppercase {\thesistitle}}
+			{\LARGE\bfseries {\thesistitle}}
 			\end{spacing}
-			
-			\vspace{\stretch{2}}
+			\begin{spacing}{1.2}
+			{\Large\bfseries {\thesissubtitle}}
+			\end{spacing}
+		
+			\vspace{\stretch{5}}
 			
 			Dissertation\\~\\
 			To obtain the degree of Doctor at Maastricht University,\\
-			on the authority of the Rector Magnificus, Prof. Dr. R.M. Letschert,\\
+			on the authority of the Rector Magnificus, Prof. Dr. Rianne M. Letschert,\\
 			in accordance with the decision of the Board of Deans,\\
 			to be defended in public \\
 			on \thesisdefendingdate, at \thesisdefendingtime
@@ -133,14 +139,6 @@
 			\vspace{\stretch{1}}
 		\end{center}
 	\end{titlepage}
-}
-
-%% Flip the printer margins from left to right
-\newcommand{\flipbindingmargins}{
-	\let\tmp\oddsidemargin
-	\let\oddsidemargin\evensidemargin
-	\let\evensidemargin\tmp
-	\reversemarginpar		
 }
 
 %% Environment for pushing a paragraph to the bottom of the page
@@ -163,7 +161,7 @@
 			\thesiscopromotors
 		\end{addmarginnobigskip}
 		
-		\vspace{2em}
+		\vspace{1em}
 		
 		\textbf{Assessment Committee} \\
 		\begin{addmarginnobigskip}[1em]{2em}
@@ -221,11 +219,14 @@
 }
 
 
+%% for printing a papercitation with all the authors
+\newcommand{\printpublication}[1]{\AtNextCite{\defcounter{maxnames}{99}}\fullcite{#1}}
+
 %% For citing the work a chapter came from
 \newcommand{\papercitation}[1]{
 	\begin{bottomparagraph}
 		\rule{0.5\textwidth}{0.1pt}\\
-		\hspace*{1em} Adapted from: \fullcite{#1}.
+		\hspace*{1em} Adapted from: \printpublication{#1}.
 	\end{bottomparagraph}
 }
 
@@ -233,6 +234,7 @@
 \KOMAoption{chapterprefix}{true}
 \renewcommand{\chaptername}{}
 \renewcommand*{\raggedchapter}{\raggedleft}
+\renewcommand\chapterformat{\thechapter}
 \setkomafont{chapterprefix}{\fontsize{70}{0} \selectfont}
 \setkomafont{chapter}{\normalfont\huge}
 
@@ -290,3 +292,95 @@
 %% The spacing of the sections in the main table of contents
 \RedeclareSectionCommand[tocindent=2.5em]{section}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Adds code needed to make author names bold.
+%% Use with: \addboldnames{{Sigfridsson, Emma},{Vizedom, Monika B.}}
+%% And reset with: \resetboldnames
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xpatch}
+
+\makeatletter
+\def\hlblx@bibfile@name{\jobname -boldnames.bib}
+\newwrite\hlblx@bibfile
+\immediate\openout\hlblx@bibfile=\hlblx@bibfile@name
+
+\newcounter{hlblx@name}
+\setcounter{hlblx@name}{0}
+
+\newcommand*{\hlblx@writenametobib}[1]{%
+	\stepcounter{hlblx@name}%
+	\edef\hlblx@tmp@nocite{%
+		\noexpand\AfterPreamble{%
+			\noexpand\setbox0\noexpand\vbox{%
+				\noexpand\hlblx@getmethehash{hlblx@name@\the\value{hlblx@name}}}}%
+	}%
+	\hlblx@tmp@nocite
+	\immediate\write\hlblx@bibfile{%
+		@misc{hlblx@name@\the\value{hlblx@name}, author = {\unexpanded{#1}}, %
+			options = {dataonly=true},}%
+	}%
+}
+
+\AtEndDocument{%
+	\closeout\hlblx@bibfile}
+
+\addbibresource{\hlblx@bibfile@name}
+
+\newcommand*{\hlbxl@boldhashes}{}
+\DeclareNameFormat{hlblx@hashextract}{%
+	\xifinlist{\thefield{hash}}{\hlbxl@boldhashes}
+	{}
+	{\listxadd{\hlbxl@boldhashes}{\thefield{fullhash}}}}
+
+\DeclareCiteCommand{\hlblx@getmethehash}
+{}
+{\printnames[hlblx@hashextract][1-999]{author}}
+{}
+{}
+
+\newcommand*{\addboldnames}{\forcsvlist\hlblx@writenametobib}
+\newcommand*{\resetboldnames}{\def\hlbxl@boldhashes{}}
+
+\newbibmacro*{name:bold}{%
+	\def\do##1{\iffieldequalstr{hash}{##1}{\bfseries\listbreak}{}}%
+	\dolistloop{\hlbxl@boldhashes}%
+}
+\makeatother
+
+\xpretobibmacro{name:family}{\begingroup\usebibmacro{name:bold}}{}{}
+\xpretobibmacro{name:given-family}{\begingroup\usebibmacro{name:bold}}{}{}
+\xpretobibmacro{name:family-given}{\begingroup\usebibmacro{name:bold}}{}{}
+\xpretobibmacro{name:delim}{\begingroup\normalfont}{}{}
+
+\xapptobibmacro{name:family}{\endgroup}{}{}
+\xapptobibmacro{name:given-family}{\endgroup}{}{}
+\xapptobibmacro{name:family-given}{\endgroup}{}{}
+\xapptobibmacro{name:delim}{\endgroup}{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% End of code needed to make author names bold.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Use this to update the maximum number of shown bibliography names.
+%% This is meant to be used in the chapter for your own publications.
+\makeatletter
+\newcommand\Setmaxbibnames[1]{\renewcommand\blx@maxbibnames{#1}}
+\makeatletter
+
+%% remove DOI from the references
+%% This is meant to be used in the chapter for your own publications.
+\makeatletter
+\newcommand\removeDOI{
+	\DeclareCiteCommand{\fullcite}
+	{\defcounter{maxnames}{\blx@maxbibnames}%
+		\usebibmacro{prenote}}
+	{\clearfield{doi}%
+		\usedriver
+		{\DeclareNameAlias{sortname}{default}}
+		{\thefield{entrytype}}}
+	{\multicitedelim}
+	{\usebibmacro{postnote}}
+}
+\makeatother

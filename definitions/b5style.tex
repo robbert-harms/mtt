@@ -6,8 +6,6 @@
 	numbers=noendperiod, % 2.3.1 vs 2.3.1. (no dot after the last chapter number)
 	twoside,
 	paper=17cm:24cm,
-	DIV=14,
-	BCOR=5.0mm,
 	parskip=half, %% better paragraph spacing
 	cleardoublepage=empty,
 	headinclude,
@@ -19,7 +17,7 @@
 {mttTemplate}
 
 \usepackage{geometry}
-\geometry{ignoreall,heightrounded}
+\geometry{ignoreall,heightrounded,bindingoffset=0.5cm,left=2cm,right=2cm}
 
 \setlength{\headsep}{2.5em}
 
@@ -27,4 +25,5 @@
 \providetoggle{a4style}
 \settoggle{a4style}{false}
 
-\flipbindingmargins
+%% not needed when we set the margins explictly using geometry package
+%\flipbindingmargins
