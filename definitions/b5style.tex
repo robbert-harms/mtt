@@ -1,7 +1,7 @@
 \documentclass
 [
 	paper=b5,
-	fontsize=11pt,
+	fontsize=10pt,
 	headings=big,
 	numbers=noendperiod, % 2.3.1 vs 2.3.1. (no dot after the last chapter number)
 	twoside,
@@ -17,13 +17,10 @@
 {mttTemplate}
 
 \usepackage{geometry}
-\geometry{ignoreall,heightrounded,bindingoffset=0.5cm,left=2cm,right=2cm}
+\geometry{ignoreall,heightrounded,bindingoffset=0.5cm,left=2cm,right=2cm,footskip=1.3cm,bottom=3cm}
 
 \setlength{\headsep}{2.5em}
 
 %% allows for conditioning on the paper format
 \providetoggle{a4style}
 \settoggle{a4style}{false}
-
-%% not needed when we set the margins explictly using geometry package
-%\flipbindingmargins

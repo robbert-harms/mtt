@@ -29,8 +29,9 @@
 %% The front matter
 \frontmatter
 	\headerpage
+	\colofon
 	\thesistitlepage
-	\infopage[true]  % set to false to disable the copyright text
+	\infopage
 	\dedication{To my parents}
 	\tableofcontents
 
@@ -43,11 +44,13 @@
 	%...
 	\include{chapters/discussion}	
 
+	\begin{appendices}
+		\input{appendices/chapter1}
+	\end{appendices}
 
 %% The final part of the book, the bibliography and final parts
 \backmatter	
-    %% for the "notcategory" see the mttTemplate.cls file
-	\printbibliography[notcategory=ignore]
+	\printbibliography
 	
 	\include{chapters/valorisation}
 	\include{chapters/samenvatting}

@@ -76,7 +76,7 @@
 %% set the header style, chapter header verso, nothing recto
 \renewcommand\@chapapp{Chapter}
 \renewcommand*{\chaptermarkformat}{\@chapapp~\thechapter. \enskip}
-\rohead{}
+
 
 %% The addmargin environment without the big vertical skip
 \newenvironment{addmarginnobigskip}{\setlength{\parskip}{0pt plus 1pt}\addmargin}{\endaddmargin}
@@ -141,10 +141,11 @@
 	\end{titlepage}
 }
 
+
 %% Environment for pushing a paragraph to the bottom of the page
 \newenvironment{bottomparagraph}{\par\vspace*{\fill}}{}
 
-%% The info page with the promotor information and the legal stuff
+%% The info page with the promotor information 
 \newcommand{\infopage}[1][false]{
 	\thispagestyle{empty}
 	
@@ -169,23 +170,22 @@
 		\end{addmarginnobigskip}	
 		
 	\end{flushleft}
-
-	\begin{bottomparagraph}		
-		\IfEqCase{#1}{
-			{false}{}
-			{true}{
-				\textcopyright \space \thesisauthor, Maastricht \thesisyear. \\
-				All rights reserved. No part of this publication may be reproduced, stored in a retrieval system or transmitted in any form or by any means, electronic, mechanical, photocopying, recording or otherwise, without prior written permission of the author.
-				\\~\\
-				\begin{tabular}{@{}ll@{}}
-					Cover & \coverdetails \\ 
-					Production & \productiondetails \\
-					ISBN & \isbnnumber
-				\end{tabular} 
-			}
-		}
-	\end{bottomparagraph}
 	\clearpage
+}
+
+%% the colofon
+\newcommand{\colofon}{
+	\thispagestyle{empty}
+	\begin{bottomparagraph}		
+		\textcopyright \space \thesisauthor, Maastricht \thesisyear. \\
+		All rights reserved. No part of this publication may be reproduced, stored in a retrieval system or transmitted in any form or by any means, electronic, mechanical, photocopying, recording or otherwise, without prior written permission of the author.
+		\\~\\
+		\begin{tabular}{@{}ll@{}}
+			Cover & \coverdetails \\ 
+			Production & \productiondetails \\
+			ISBN & \isbnnumber
+		\end{tabular} 
+	\end{bottomparagraph}
 }
 
 %% The dedication markup, use as \dedication{My text}
@@ -256,11 +256,16 @@
 \addtokomafont{chapterentry}{\rmfamily} % but that also sets the TOC entries, so reverting that
 
 %% set the font of the captions
-\setkomafont{caption}{\small}
-\setkomafont{captionlabel}{\small}
+\setkomafont{caption}{\footnotesize}
+\setkomafont{captionlabel}{\footnotesize}
 \setcapindent{0em}
-\addtokomafont{caption}{\color{black!30!gray}}
-\addtokomafont{captionlabel}{\color{black}}
+%\addtokomafont{caption}{\color{black!30!gray}}
+%\addtokomafont{captionlabel}{\color{black}}
+
+
+%% the distance between floats and texts
+\setlength{\intextsep}{15pt plus 1.0pt minus 2.0pt}
+
 
 %% The spacing between the start of the section and the section title
 \RedeclareSectionCommand[afterskip=0.05em]{section}
